@@ -122,7 +122,7 @@ def prepdeploy():
     return "endagaweb_%s.zip" % pkg_version
 
 
-def clonedb(original_db, clone_db, region="ap-northeast-1"):
+def clonedb(original_db, clone_db, region="us-west-2"):
     """ [deploy] Creates a clone of the current production DB.
 
     Usage from the command line requires fab's special arg syntax, e.g.:

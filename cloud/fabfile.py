@@ -46,9 +46,29 @@ def proxy():
     env.ssh_config_path = "../client/ssh/proxy-config"
     env.use_ssh_config = True
 
+def is_hg():
+    #first test for hg
+    try:
+        local("hg identify")
+        return True
+    except:
+        return False
+
+def is_git():
+    #first test for hg
+    try:
+        local("git rev-parse")
+        return True
+    except:
+        return False
 
 def get_bookmark():
-    bookmarks = local("hg bookmarks", capture=True)
+    if (is_hg()):
+        bookmarks = local("hg bookmarks", capture=True)
+    elif(is_git()):
+        bookmarks = local("git branch", capture=True)
+    else:
+        raise(Exception("Not git or hg"))
     for line in bookmarks.split("\n"):
         if "*" in line:
             return line.split()[1]
@@ -57,7 +77,12 @@ def get_bookmark():
 def package():
     """ [deploy] Creates a deployment package. """
     branch = get_bookmark()
-    commit_summary = local('hg id -i', capture=True).translate(None, "+")
+    if (is_hg()):
+        commit_summary = local('hg id -i', capture=True).translate(None, "+")
+    elif(is_git()):
+        commit_summary = local('git rev-parse HEAD', capture=True).translate(None, "+")
+    else:
+        raise(Exception("Not git or hg"))
     # dpkg requires the version to start with a number, so we just always
     # include a 0.
     version = "0-%s" % commit_summary.split()[0]

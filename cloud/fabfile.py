@@ -116,9 +116,9 @@ def prepdeploy():
     with lcd('/tmp/deploydir'):
         local('zip endagaweb_%s appspec.yml endagaweb_all.deb scripts/*'
               % (pkg_version))
-        local('aws s3 cp endagaweb_%s.zip s3://endagaweb-deployment/' % pkg_version)
+        local('aws s3 cp endagaweb_%s.zip s3://ccm-uw/' % pkg_version)
     local('rm -r /tmp/deploydir')
-    puts("Deployment bundle: s3://endagaweb-deployment/endagaweb_%s.zip" % pkg_version)
+    puts("Deployment bundle: s3://ccm-uw/endagaweb_%s.zip" % pkg_version)
     return "endagaweb_%s.zip" % pkg_version
 
 
@@ -254,7 +254,7 @@ def deploy(description=None):
     # Start the deploy.
     cmd = ("aws deploy create-deployment --application-name=endagaweb \
            --deployment-group-name=endagaweb-%s --description='%s' \
-           --s3-location bucket=endagaweb-deployment,key=%s,bundleType=zip"
+           --s3-location bucket=ccm-uw,key=%s,bundleType=zip"
            % (env.deploy_target, description, deployment_bundle))
     deployment_id = json.loads(local(cmd, capture=True))['deploymentId']
 

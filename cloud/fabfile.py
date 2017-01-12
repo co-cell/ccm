@@ -250,7 +250,7 @@ def deploy(description=None):
     deployment_bundle = prepdeploy()
     if not description:
         now = datetime.datetime.utcnow()
-        description = "Deployment of %s at %s UTC" % (deployment_bundle, now)
+        description = "Deployment of endagaweb at %s UTC" % (now)
     # Start the deploy.
     cmd = ("aws deploy create-deployment --application-name=endagaweb \
            --deployment-group-name=endagaweb-%s --description='%s' \

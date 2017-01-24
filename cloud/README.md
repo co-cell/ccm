@@ -121,11 +121,11 @@ Our uWSGI application configuration loads its configuration
 information from `/var/opt/endagaweb-envdir`. This is where the
 application will load its production settings from. Our production
 settings are stored on a directory in S3:
-`s3://endagaweb/envdir_prod`. These settings are automatically loaded
+`s3://uwccm/environments/production`. These settings are automatically loaded
 onto the server in each deployment. To modify these settings, you can
 use standard AWS CLI tools to copy new settings files to that
 directory, e.g. `aws cli s3 cp DATABASE_URL
-s3://endagaweb/envdir_prod/.` Any changes you've made will take effect
+s3://uwccm/environments/production.` Any changes you've made will take effect
 on the next deployment.
 
 Style

@@ -18,11 +18,11 @@ apt-get -y update
 apt-get -y install awscli
 apt-get -y install ruby2.0
 cd /home/ubuntu
-aws s3 cp s3://aws-codedeploy-ap-northeast-1/latest/install . --region ap-northeast-1
+aws s3 cp s3://aws-codedeploy-us-west-2/latest/install . --region us-west-2
 chmod +x ./install
 ./install auto
 
 # Get environment now that AWS CLI is set up
 # CodeDeploy may not have applied tags when we get here, so we just figure out what autoscaling group we're part of and get the tags that will eventually be applied.
-ASGROUP=`aws autoscaling describe-auto-scaling-instances --instance-ids $(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id) --region ap-northeast-1 --output=text | cut -f 2`
-DEPLOY_ENV=`aws autoscaling describe-tags --filters Name="auto-scaling-group",Values=$ASGROUP Name=Key,Values=environment --region ap-northeast-1 --output=text | cut -f6`
+ASGROUP=`aws autoscaling describe-auto-scaling-instances --instance-ids $(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id) --region us-west-2 --output=text | cut -f 2`
+DEPLOY_ENV=`aws autoscaling describe-tags --filters Name="auto-scaling-group",Values=$ASGROUP Name=Key,Values=environment --region us-west-2 --output=text | cut -f6`

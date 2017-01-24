@@ -116,13 +116,13 @@ def prepdeploy():
     with lcd('/tmp/deploydir'):
         local('zip endagaweb_%s appspec.yml endagaweb_all.deb scripts/*'
               % (pkg_version))
-        local('aws s3 cp endagaweb_%s.zip s3://endagaweb-deployment/' % pkg_version)
+        local('aws s3 cp endagaweb_%s.zip s3://uwccm/ --region us-west-2' % pkg_version)
     local('rm -r /tmp/deploydir')
-    puts("Deployment bundle: s3://endagaweb-deployment/endagaweb_%s.zip" % pkg_version)
+    puts("Deployment bundle: s3://uwccm/endagaweb_%s.zip" % pkg_version)
     return "endagaweb_%s.zip" % pkg_version
 
 
-def clonedb(original_db, clone_db, region="ap-northeast-1"):
+def clonedb(original_db, clone_db, region="us-west-2"):
     """ [deploy] Creates a clone of the current production DB.
 
     Usage from the command line requires fab's special arg syntax, e.g.:
@@ -250,11 +250,11 @@ def deploy(description=None):
     deployment_bundle = prepdeploy()
     if not description:
         now = datetime.datetime.utcnow()
-        description = "Deployment of %s at %s UTC" % (deployment_bundle, now)
+        description = "Deployment of endagaweb at %s UTC" % (now)
     # Start the deploy.
     cmd = ("aws deploy create-deployment --application-name=endagaweb \
            --deployment-group-name=endagaweb-%s --description='%s' \
-           --s3-location bucket=endagaweb-deployment,key=%s,bundleType=zip"
+           --s3-location bucket=uwccm,key=%s,bundleType=zip"
            % (env.deploy_target, description, deployment_bundle))
     deployment_id = json.loads(local(cmd, capture=True))['deploymentId']
 

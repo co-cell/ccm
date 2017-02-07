@@ -277,3 +277,12 @@ SESSION_COOKIE_SECURE = True
 
 # Security middleware settings
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+NUMBER_COUNTRIES = {
+    'US': 'United States (+1)',
+    'CA': 'Canada (+1)',
+    'SE': 'Sweden (+46)',
+    'ID': 'Indonesia (+62)',
+    'PH': 'Philippines (+63)',
+    'XC': 'Cascadia (+999) FAKE',
+}

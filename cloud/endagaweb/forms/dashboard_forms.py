@@ -14,6 +14,7 @@ from django import forms
 from django.db.models import Value
 from django.db.models.functions import Coalesce
 from django.core import urlresolvers
+from django.conf import settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field
 from crispy_forms.bootstrap import StrictButton, FieldWithButtons
@@ -23,7 +24,6 @@ import pytz
 from ccm.common.currency import CURRENCIES
 from endagaweb import models
 from endagaweb.templatetags import apptags
-
 
 class UpdateContactForm(forms.Form):
     email = forms.EmailField(required=False, label="Email")
@@ -236,15 +236,8 @@ class NetworkSettingsForm(forms.Form):
             CURRENCIES.values()]
     subscriber_currency = forms.ChoiceField(required=False, choices=choices,
                                             label='Subscriber currency')
-    choices = (
-        ('CA', 'Canada (+1)'),
-        ('ID', 'Indonesia (+62)'),
-        ('PH', 'Philippines (+63)'),
-        ('SE', 'Sweden (+46)'),
-        ('US', 'United States (+1)'),
-    )
     number_country = forms.ChoiceField(required=False, label='Number country',
-                                       choices=choices)
+                                       choices=settings.NUMBER_COUNTRIES.items())
     enabled_choices = (
         (True, 'enabled'),
         (False, 'disabled'),

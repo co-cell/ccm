@@ -30,7 +30,7 @@
   #  - name: Move FS conf
   #    synchronize: src=files/freeswitch_server/freeswitch dest=/etc/ recursive=yes delete=yes
     - name: Install Monitor
-      copy: src=files/monitors/etage_freeswitch_monitor.py /home/ubuntu/
+      copy: src=files/monitors/etage_freeswitch_monitor.py dest=/home/ubuntu/
     - name: Setup cron
       cron: name="FS Monitor" job="/home/ubuntu/etage_freeswitch_monitor.py"
     - name: Warn about credentials

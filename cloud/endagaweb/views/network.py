@@ -18,6 +18,7 @@ from django.core.exceptions import ValidationError
 from django.core import urlresolvers
 from django.db import transaction
 from django.shortcuts import redirect
+from django.conf import settings
 import django_tables2 as tables
 from guardian.shortcuts import get_objects_for_user
 
@@ -26,15 +27,6 @@ from endagaweb import models
 from endagaweb.forms import dashboard_forms
 from endagaweb.views.dashboard import ProtectedView
 from endagaweb.views import django_tables
-
-
-NUMBER_COUNTRIES = {
-    'US': 'United States (+1)',
-    'CA': 'Canada (+1)',
-    'SE': 'Sweden (+46)',
-    'ID': 'Indonesia (+62)',
-    'PH': 'Philippines (+63)',
-}
 
 
 class NetworkInfo(ProtectedView):
@@ -88,7 +80,7 @@ class NetworkInfo(ProtectedView):
             'currency': CURRENCIES[user_profile.network.subscriber_currency],
             'user_profile': user_profile,
             'network': network,
-            'number_country': NUMBER_COUNTRIES[network.number_country],
+            'number_country': settings.NUMBER_COUNTRIES[network.number_country],
             'current_version': current_version,
             'latest_stable_version': latest_stable_version,
             'latest_beta_version': latest_beta_version,
@@ -393,7 +385,7 @@ class NetworkEdit(ProtectedView):
                     request.POST['subscriber_currency'])
                 network.save()
             if 'number_country' in request.POST:
-                if request.POST['number_country'] not in NUMBER_COUNTRIES:
+                if request.POST['number_country'] not in settings.NUMBER_COUNTRIES:
                     return http.HttpResponseBadRequest()
                 network.number_country = request.POST['number_country']
                 network.save()

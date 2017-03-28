@@ -47,7 +47,7 @@ def proxy():
     env.use_ssh_config = True
 
 def is_hg():
-    #first test for hg
+    """ Determines if the project is hg controlled """
     try:
         local("hg identify")
         return True
@@ -55,7 +55,7 @@ def is_hg():
         return False
 
 def is_git():
-    #first test for hg
+    """ Determines if the project is git controlled """
     try:
         local("git rev-parse")
         return True

@@ -46,7 +46,8 @@ def proxy():
     env.ssh_config_path = "../client/ssh/proxy-config"
     env.use_ssh_config = True
 
-def is_hg():
+
+def _is_hg():
     """ Determines if the project is hg controlled """
     try:
         local("hg identify")
@@ -54,7 +55,8 @@ def is_hg():
     except:
         return False
 
-def is_git():
+
+def _is_git():
     """ Determines if the project is git controlled """
     try:
         local("git rev-parse")
@@ -62,10 +64,11 @@ def is_git():
     except:
         return False
 
+
 def get_bookmark():
-    if (is_hg()):
+    if (_is_hg()):
         bookmarks = local("hg bookmarks", capture=True)
-    elif(is_git()):
+    elif(_is_git()):
         bookmarks = local("git branch", capture=True)
     else:
         raise(Exception("Not git or hg"))
@@ -77,9 +80,9 @@ def get_bookmark():
 def package():
     """ [deploy] Creates a deployment package. """
     branch = get_bookmark()
-    if (is_hg()):
+    if (_is_hg()):
         commit_summary = local('hg id -i', capture=True).translate(None, "+")
-    elif(is_git()):
+    elif(_is_git()):
         commit_summary = local('git rev-parse HEAD', capture=True).translate(None, "+")
     else:
         raise(Exception("Not git or hg"))

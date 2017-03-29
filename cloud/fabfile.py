@@ -245,7 +245,7 @@ def get_machines(environment=None):
 
 def deploy(description=None):
     """ [deploy] Make a deployment to an environment. """
-    branch = get_bookmark()
+    branch, summary, version = _get_versioning_metadata()
     try:
         if env.deploy_target == "production":
             if branch != "master":
@@ -300,7 +300,7 @@ def migrate(application="", migration="", fake_initial=""):
     Usage:
       fab staging migrate:application=endagaweb,fake_initial=True
     """
-    branch = get_bookmark()
+    branch, summary, version = _get_versioning_metadata()
     try:
         if env.deploy_target == "production":
             if branch != "master":

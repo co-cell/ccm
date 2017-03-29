@@ -65,30 +65,30 @@ def _is_git():
         return False
 
 
-def get_bookmark():
+def _get_versioning_metadata():
+    """ Extracts version metadata from the version control system """
     if (_is_hg()):
         bookmarks = local("hg bookmarks", capture=True)
-    elif(_is_git()):
-        bookmarks = local("git branch", capture=True)
-    else:
-        raise(Exception("Not git or hg"))
-    for line in bookmarks.split("\n"):
-        if "*" in line:
-            return line.split()[1]
-    return "master"
-
-def package():
-    """ [deploy] Creates a deployment package. """
-    branch = get_bookmark()
-    if (_is_hg()):
         commit_summary = local('hg id -i', capture=True).translate(None, "+")
     elif(_is_git()):
+        bookmarks = local("git branch", capture=True)
         commit_summary = local('git rev-parse HEAD', capture=True).translate(None, "+")
     else:
         raise(Exception("Not git or hg"))
-    # dpkg requires the version to start with a number, so we just always
-    # include a 0.
+
+    # dpkg requires the version start with a number, so lead with `0-`
     version = "0-%s" % commit_summary.split()[0]
+
+    for line in bookmarks.split("\n"):
+        if "*" in line:
+            return line.split()[1], commit_summary, version
+    return "master", commit_summary, version
+
+
+def package():
+    """ [deploy] Creates a deployment package. """
+    branch, summary, version = _get_versioning_metadata()
+
     # Builds the deployment package.
     local('fpm -s dir -t deb -n endagaweb -a all -v %(version)s \
             --description "%(branch)s: %(cs)s" \
@@ -104,7 +104,7 @@ def package():
             configs/celeryd.conf=/etc/supervisor/conf.d/ \
             configs/celerybeat.conf=/etc/supervisor/conf.d/ \
             configs/celerystick.conf=/etc/supervisor/conf.d/' \
-            % {'branch': branch, 'cs': commit_summary, 'version': version})
+            % {'branch': branch, 'cs': summary, 'version': version})
     return version
 
 

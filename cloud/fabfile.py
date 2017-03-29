@@ -68,21 +68,23 @@ def _is_git():
 def _get_versioning_metadata():
     """ Extracts version metadata from the version control system """
     if (_is_hg()):
-        bookmarks = local("hg bookmarks", capture=True)
         commit_summary = local('hg id -i', capture=True).translate(None, "+")
+        # Extract the current branch/bookmark from the bookmarks list.
+        bookmarks = local("hg bookmarks", capture=True)
+        branch = "master"
+        for line in bookmarks.split("\n"):
+            if "*" in line:
+                 branch = line.split()[1]
+                 break
     elif(_is_git()):
-        bookmarks = local("git branch", capture=True)
+        branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
         commit_summary = local('git rev-parse HEAD', capture=True).translate(None, "+")
     else:
         raise(Exception("Not git or hg"))
 
     # dpkg requires the version start with a number, so lead with `0-`
     version = "0-%s" % commit_summary.split()[0]
-
-    for line in bookmarks.split("\n"):
-        if "*" in line:
-            return line.split()[1], commit_summary, version
-    return "master", commit_summary, version
+    return branch, commit_summary, version
 
 
 def package():

@@ -16,7 +16,7 @@
 
 set -e
 BUILD_DATE=`date -u +"%Y%m%d%H%M%S"`
-ENDAGA_VERSION="0.7.11"
+ENDAGA_VERSION="0.8.1"
 
 # The resulting package is placed in $OUTPUT_DIR
 # or in the cwd.
@@ -91,8 +91,9 @@ elif [[ $GSM =~ osmocom ]]; then
 	'--depends' 'osmo-trx (>= 0.1.9)'
 	'--depends' 'osmo-pcu (>= 0.2)'
 	'--depends' 'osmocom-sgsn (>= 0.15.0)'
-	'--depends' 'python-osmocom (>= 0.0.3)'
-	'--depends' 'freeswitch-meta-vanilla'
+	'--depends' 'python3-osmocom (>= 0.1.0)'
+  '--depends' 'python-esl'
+  '--depends' 'freeswitch-meta-vanilla'
 	'--depends' 'freeswitch-mod-python'
 	'--depends' 'freeswitch-mod-sms'
 	'--depends' 'freeswitch-mod-smpp'
@@ -134,13 +135,13 @@ fpm \
     --license "BSD" \
     --maintainer "CommunityCellularManager@fb.com" \
     --depends "endaga-lang (= 0.2.3)" \
-    --depends "freeswitch-conf-endaga (= 0.3.4)" \
+    --depends "freeswitch-conf-endaga (= 0.3.5)" \
     --depends "libpq-dev" \
     --depends "lighttpd" \
     --depends "openvpn" \
-    --deb-pre-depends "python-endaga-core (= 0.5.11)" \
-    --depends "python-psycopg2" \
-    --depends "python-snowflake (= 0.0.2)" \
+    --deb-pre-depends "python3-endaga-core (= 0.6.1)" \
+    --depends "python3-psycopg2" \
+    --depends "python3-snowflake (= 0.0.3)" \
     --depends "postgresql" \
     --depends "postgresql-contrib" \
     --depends "sqlite3" \

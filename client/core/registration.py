@@ -21,7 +21,7 @@ import os
 import socket
 import time
 
-import envoy
+import delegator
 import requests
 from requests.exceptions import RequestException
 from snowflake import snowflake
@@ -29,7 +29,6 @@ from snowflake import snowflake
 from ccm.common import logger
 from core import system_utilities
 from core.bts import bts
-from core.exceptions import BSSError
 from core.config_database import ConfigDB
 from core.servicecontrol import ServiceState
 from core.service import Service
@@ -138,7 +137,6 @@ def get_vpn_conf(eapi, csr):
         'bts_uuid': _get_snowflake(),
         'csr': csr
     }
-    registration = conf['registry'] + '/bts/register'
     try:
         return _send_cloud_req(
             requests.post,
@@ -215,7 +213,7 @@ def generate_keys():
     # generate keys and csr
     with open('/etc/openvpn/endaga-sslconf.conf.noauto', 'w') as f:
         f.write(sslconf)
-    envoy.run('openssl req -new -newkey rsa:2048'
+    delegator.run('openssl req -new -newkey rsa:2048'
               ' -config /etc/openvpn/endaga-sslconf.conf.noauto'
               ' -keyout /etc/openvpn/endaga-client.key'
               ' -out /etc/openvpn/endaga-client.req -nodes')
@@ -275,8 +273,24 @@ def register(eapi):
                 cert = f.read()
 
         # validate client cert against CA
-        system_utilities.verify_cert(
-            cert, os.path.dirname(VPN_CONF) + '/etage-bundle.crt')
+        cert_verified = False
+        cert_dir = os.path.dirname(VPN_CONF)
+        cert_path = os.path.join(cert_dir, 'endaga-client.crt')
+        for c in ['etage-bundle.local.crt', 'etage-bundle.crt']:
+            ca_path = os.path.join(cert_dir, c)
+            if system_utilities.verify_cert(cert, cert_path, ca_path):
+                logger.info("Verified client cert against CA %s" % (ca_path, ))
+                cert_verified = True
+                break
+        if not cert_verified:
+            """
+            Any error requires manual intervention, i.e., updating the CA
+            cert, and hence cannot be resolved by retrying
+            registration. Therefore we just raise an exception that
+            terminates the agent.
+            """
+            raise SystemExit("Unable to verify client cert, terminating")
+
         conf['bts_registered'] = True
 
 
@@ -328,7 +342,10 @@ def update_vpn():
     # Start all the other services.  This is safe to run if services are
     # already started.
     for s in SERVICES:
-        s.start()
+        try:
+            s.start()
+        except Exception as e:
+            logger.critical("Exception %s while starting %s" % (e, s.name))
 
 def ensure_fs_external_bound_to_vpn():
     # Make sure that we're bound to the VPN IP on the external sofia profile,
@@ -348,9 +365,12 @@ def clear_old_pid(pname='OpenBTS', path='/var/run/OpenBTS.pid'):
     # OpenBTS issue we see. Note, caller must have permissions to remove file.
 
     # Determine PIDs associated with pname
-    output = envoy.run('ps -A | grep OpenBTS')
+    c = delegator.run('ps -A | grep OpenBTS')
+    if c.return_code != 0:
+        return
+
     pids = []
-    for line in output.std_out.split('\n'):
+    for line in c.out.split('\n'):
         try:
             pids.append(int(line.strip().split()[0]))
         except ValueError:

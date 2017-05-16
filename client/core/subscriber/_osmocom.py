@@ -13,18 +13,17 @@ LICENSE file in the root directory of this source tree. An additional grant
 of patent rights can be found in the PATENTS file in the same directory.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+
+
+
+
 
 import os
 import sys
 
 import psycopg2
-from osmocom.subscribers import Subscribers
+from osmocom.vty.subscribers import Subscribers
 
-from ccm.common import logger
 from core import number_utilities
 from core.config_database import ConfigDB
 from core.subscriber.base import BaseSubscriber, SubscriberNotFound
@@ -62,9 +61,9 @@ class OsmocomSubscriber(BaseSubscriber):
                 s.set_extension(imsi, number)
                 s.set_authorized(imsi, 1)
                 return s.show('imsi', imsi)
-        except Exception as e:
+        except Exception:
             exc_type, exc_value, exc_trace = sys.exc_info()
-            raise BSSError, "%s: %s" % (exc_type, exc_value), exc_trace
+            raise BSSError("%s: %s" % (exc_type, exc_value)).with_traceback(exc_trace)
 
     def get_subscribers(self, imsi=''):
         """Get subscriber by imsi."""
@@ -87,10 +86,23 @@ class OsmocomSubscriber(BaseSubscriber):
                                     'ipaddr': self.get_ip(row[0]),
                                     'caller_id': sub_record['extension'],
                                     'numbers': [sub_record['extension']]})
-                except Exception as e:
+                except Exception:
                     exc_type, exc_value, exc_trace = sys.exc_info()
-                    raise BSSError, "%s: %s" % (exc_type, exc_value), exc_trace
+                    raise BSSError("%s: %s" % (exc_type, exc_value)).with_traceback(exc_trace)
         return subscribers
+
+    def get_subscriber_imsis(self):
+        """Get a set of subscriber imsis."""
+        with psycopg2.connect(host='localhost', database='endaga', user=PG_USER,
+                              password=PG_PASSWORD) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT imsi FROM subscribers")
+                try:
+                    return {row[0] for row in cursor.fetchall()}
+                except Exception:
+                    exc_type, exc_value, exc_trace = sys.exc_info()
+                    raise BSSError("%s: %s" % (exc_type, exc_value)).with_traceback(exc_trace)
+        return set()
 
     def add_number(self, imsi, number):
         """Associate another number with an IMSI.
@@ -129,7 +141,7 @@ class OsmocomSubscriber(BaseSubscriber):
             return err
         except Exception:
             exc_type, exc_value, exc_trace = sys.exc_info()
-            raise BSSError, "%s: %s" % (exc_type, exc_value), exc_trace
+            raise BSSError("%s: %s" % (exc_type, exc_value)).with_traceback(exc_trace)
 
     def get_caller_id(self, imsi):
         """Get a subscriber's caller_id.

@@ -67,20 +67,20 @@ def _is_git():
 
 def _get_versioning_metadata():
     """ Extracts version metadata from the version control system """
-    if (_is_hg()):
+    if _is_hg():
         commit_summary = local('hg id -i', capture=True).translate(None, "+")
         # Extract the current branch/bookmark from the bookmarks list.
         bookmarks = local("hg bookmarks", capture=True)
         branch = "master"
         for line in bookmarks.split("\n"):
             if "*" in line:
-                 branch = line.split()[1]
-                 break
-    elif(_is_git()):
+                branch = line.split()[1]
+                break
+    elif _is_git():
         branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
         commit_summary = local('git rev-parse HEAD', capture=True).translate(None, "+")
     else:
-        raise(Exception("Not git or hg"))
+        raise Exception("Not git or hg")
 
     # dpkg requires the version start with a number, so lead with `0-`
     version = "0-%s" % commit_summary.split()[0]
@@ -245,7 +245,7 @@ def get_machines(environment=None):
 
 def deploy(description=None):
     """ [deploy] Make a deployment to an environment. """
-    branch, summary, version = _get_versioning_metadata()
+    branch, _, _ = _get_versioning_metadata()
     try:
         if env.deploy_target == "production":
             if branch != "master":
@@ -300,7 +300,7 @@ def migrate(application="", migration="", fake_initial=""):
     Usage:
       fab staging migrate:application=endagaweb,fake_initial=True
     """
-    branch, summary, version = _get_versioning_metadata()
+    branch, _, _ = _get_versioning_metadata()
     try:
         if env.deploy_target == "production":
             if branch != "master":

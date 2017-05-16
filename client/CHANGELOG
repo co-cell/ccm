@@ -1,3 +1,25 @@
+endaga-osmocom 0.8.0 (2017 Apr 13)
+-----------------
+Pacakges affected: python3-endaga-core, python3-ccm-common, python3-osmocom, python3-sms-utilities, python3-smspdu
+Changes:
+- Python3 compatibility
+
+
+endaga-osmocom 0.7.13 (2017 Apr 13)
+-----------------
+Packages affected: python-endaga-core
+Changes:
+- Checkin no longer requires reading all subscribers from sqlite
+
+endaga-openbts, endaga-osmocom 0.7.12 (2017 Apr 4)
+-----------------
+Packages affected: python-endaga-core, freeswitch-mod-smpp, freeswitch-conf-endaga, python-ccm-common
+Changes:
+- Checkin optimzation stickiness
+- Freeswitch mod_smpp autoreconnect
+- Freeswtich nonlocal GSM encoding variable
+- XML CDR parsing cleanup in common
+
 endaga-openbts, endaga-osmocom 0.7.11 (2016 Dec 13)
 -----------------
 Packages affected: python-endaga-core, python-osmocom, freeswitch-conf-endaga

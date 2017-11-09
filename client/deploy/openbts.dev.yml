@@ -20,9 +20,6 @@
 
     - include: openbts.yml
 
-    - name: Remove production Etage repo
-      apt_repository: repo='deb http://repo.etagecom.io stable main' state=absent update_cache=no
-
     - name: Make sure (empty) local repo structure exists
       become: no
       shell: mkdir -p ~/endaga-packages/dists/localdev/main/binary-i386/
@@ -60,12 +57,23 @@
           - libspeexdsp-dev
           - libldns-dev
           - libedit-dev
+          - libssl-dev
 
     - name: Setup build requirements for python packages
       apt: pkg={{ item }} state=present update_cache=no
       with_items:
-          - python-pip
-          - python-pybabel
+          - python3-babel
+          - python3-dev
+          - python3-setuptools
+
+    - name: Get pip3 installer (not from debian repositories, uses ancient version)
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+
+    - name: Install pip
+      command: python3 /tmp/get-pip.py
+
 
     - name: Setup requirements for building FS from source (needed to generate working python modules)
       apt: pkg={{ item }} state=present update_cache=no

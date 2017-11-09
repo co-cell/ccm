@@ -68,7 +68,7 @@ def _is_git():
 def _get_versioning_metadata():
     """ Extracts version metadata from the version control system """
     if _is_hg():
-        commit_summary = local('hg id -i', capture=True).translate(None, "+")
+        commit_summary = local('hg id -i', capture=True).translate("+")
         # Extract the current branch/bookmark from the bookmarks list.
         bookmarks = local("hg bookmarks", capture=True)
         branch = "master"
@@ -158,13 +158,13 @@ def clonedb(original_db, clone_db, region="us-west-2"):
     sec_group = orig_instance['VpcSecurityGroups'][0]["VpcSecurityGroupId"]
     datestamp = datetime.datetime.utcnow().strftime("%Y%m%d-%H%M%S")
     clone_snapshot = "from-%s-for-%s-%s" % (original_db, clone_db, datestamp)
-    print sec_group, clone_snapshot, clone_db, original_db
+    print(sec_group, clone_snapshot, clone_db, original_db)
     # Create the snapshot.
     puts("Creating DB snapshot '%s', this will take a while." % clone_snapshot)
     cmd = "aws rds create-db-snapshot --db-snapshot-identifier %s \
            --db-instance-identifier %s" % (clone_snapshot, original_db)
     out = local(cmd, capture=True)
-    print out
+    print(out)
     # Spin till the snapshot has been created...
     while True:
         cmd = ("aws rds describe-db-snapshots --db-snapshot-identifier %s"
@@ -239,7 +239,7 @@ def get_machines(environment=None):
         environment = env.deploy_target
     hosts = _get_tier_hostnames(environment)
     for h in hosts:
-        print h
+        print(h)
     return hosts
 
 
@@ -266,7 +266,7 @@ def deploy(description=None):
     username = getpass.getuser()
     text = '%s is deploying to `%s` from branch `%s` (bundle: `%s`)' % (
         username, env.deploy_target, branch, deployment_bundle)
-    print text
+    print(text)
 
     # Now display deployment status until success or failure.
     cmd = ("aws deploy get-deployment --deployment-id %s" % deployment_id)
@@ -281,13 +281,13 @@ def deploy(description=None):
             # we succeeded. # TODO: replace with IRC
             text = 'deployment to `%s` succeeded (bundle: `%s`)' % (
                 env.deploy_target, deployment_bundle)
-            print text
+            print(text)
             break
         else:
             # we failed. TODO: send this message to IRC
             text = 'deployment to `%s` *failed* (bundle: `%s`)' % (
                 env.deploy_target, deployment_bundle)
-            print text
+            print(text)
             abort("Deployment %s failed: %s" % (deployment_id, status))
 
 
@@ -309,9 +309,6 @@ def migrate(application="", migration="", fake_initial=""):
                 abort("Can't migrations the staff env, run on prod instead.")
     except AttributeError:
         abort("No deployment target specified.")
-    username = getpass.getuser()
-    text = '%s is running a DB migration on `%s` using branch `%s`' % (
-        username, env.deploy_target, branch)
     # Get a machine to ssh into from the specified deployment target.
     host = "ubuntu@%s" % get_machines(env.deploy_target)[0]
     # Run the migration.
@@ -322,13 +319,10 @@ def migrate(application="", migration="", fake_initial=""):
     with settings(host_string=host):
         with cd("/var/www"):
             result = run("envdir /var/opt/endagaweb-envdir %s" % cmd)
-    # Tell slack how it went.
-    if result.succeeded:
-        text_a = 'the DB migration initiated by %s is complete:' % username
-        text_b = ' `%s` is migrated to `%s`' % (env.deploy_target, branch)
-        text = text_a + text_b
-    else:
-        text = 'the DB migration initiated by %s was unsuccessful' % username
+    # tell user how it went
+    msg = (("[%s] DB migration to `%s` " % (env.deploy_target, branch)) +
+           ("is complete" if result.succeeded else "was unsuccessful"))
+    print msg
 
 
 def restart(service):
@@ -349,9 +343,9 @@ def restart(service):
         with settings(host_string=host):
             result = run(cmd)
             if result.succeeded:
-                print "[%s] Restarted %s on %s" % (tier, service, h)
+                print("[%s] Restarted %s on %s" % (tier, service, h))
             else:
-                print "[%s] Failed to restart %s on %s" % (tier, service, h)
+                print("[%s] Failed to restart %s on %s" % (tier, service, h))
 
 def _get_tier_hostnames(environment):
     cmd = ("aws ec2 describe-instances --filter \

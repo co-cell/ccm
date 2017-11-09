@@ -35,7 +35,7 @@ DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 # Hosts/domain names that are valid for this site; required if DEBUG is False.
 # ALLOWED_HOSTS env variable must be a comma-separated list of domains
 ALLOWED_HOSTS = [_.strip() for _ in
-                 os.environ.get('ALLOWED_HOSTS', "localhost").split(",")]
+                 os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')]
 
 # List of finder classes that know how to find static files in various
 # locations.
@@ -277,6 +277,9 @@ ENDAGA = {
     # Enable/disable billing for networks. If false, we ignore what's in the
     # network's account balance.
     'NW_BILLING': os.environ.get("NW_BILLING", "True").lower() == "true",
+
+    # Maximum permissible validity(in days) limit for denomination
+    'MAX_VALIDITY_DAYS': 10000,
 }
 
 STRIPE_API_KEY = os.environ.get("STRIPE_API_KEY",

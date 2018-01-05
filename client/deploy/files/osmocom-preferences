@@ -1,3 +1,3 @@
 Package: *
-Pin: release l=network:osmocom:nightly
+Pin: release l=network:osmocom:latest
 Pin-Priority: 910

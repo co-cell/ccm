@@ -8,15 +8,16 @@ LICENSE file in the root directory of this source tree. An additional grant
 of patent rights can be found in the PATENTS file in the same directory.
 """
 
-from threading import Thread
-
 from ESL import ESLconnection
 from core.config_database import ConfigDB
 from core.subscriber import subscriber
 
+from .base import BaseFakePhone
+
 SMPP_PORT = 2775
 SMPP_USER = 'OSMPP'
 SMPP_PASSWORD = 'etagecom'
+
 
 class OsmocomFakePhone(BaseFakePhone):
 

@@ -329,7 +329,7 @@ class TowerEvents(drf_views.APIView):
         elif request.method == "GET":
             page = request.GET.get('page', 1)
         else:
-            return HttpResponseBadRequest()
+            return http.HttpResponseBadRequest()
 
         try:
             tower = models.BTS.objects.get(uuid=uuid,

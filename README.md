@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/uw-ictd/CommunityCellularManager.svg?branch=master)](https://travis-ci.org/uw-ictd/CommunityCellularManager)
+
 ## Overview
 
 Community Cellular Manager (CCM) is a set of programs which allow for

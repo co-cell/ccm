@@ -1,27 +1,12 @@
----
-#
-# Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
-
 language: python
 python:
-  - "2.7"
-  - "3.5"
-
-# command to install dependencies
-install: "pip install -r common/requirements.txt"
-
-# if we don't need sudo we can run in containers
+- '3.5'
+- '3.6'
+install: pip install -r common/requirements.txt
 sudo: false
-
-# test common
-script: nosetests --where common ccm.common
-
+script: nosetests --where common
 notifications:
   slack:
-  # this blob is the Slack token encrypted by Travis
-    secure: TIM52fFFALnp1ETlhmG3VAJkCGx7HSKos/xDkH/cpJr8TjK1QuynF8elH+jepnp+a0ja/b+Eop7b9nshO7U1a2QYXBTDzRjM76FW6g1uv8CQ2iw2fFPQpx2AZpZUTYQ1KJ5cc1Ipiqbeu4hjMBZQmJ7EeIpqaSDukwjO8cqPfQnL+00che2Le3Wz7RVDG0DPZdyqooboHwUGpDnNROIraEYJ+mA0eFVevV1rLsw1UECQDKzPNHNZSu/an2X6MeUUf5RInPbBLy6gpRxQkoBBj/zC3JcdulML1iRZ+dzsPPAlOlS6WighBfEFByXD6VGOxMxdOeTGiAofMsHUlpezM6X4xWiATx5gjnanAqse+DzdnILdglyzx/LcQ6u49UCAfbhehwUMcpGHmCRyv72sEST1qDEdZq3RGMphYgUURYB3IFPDo+8Vo6MxrNgTfbU3n0njWA1N2BMsYKBf+atRfb1osp1tl8bD8bgaNmT9OGtdYnRly4vzI5SWamiOo4mr0MOjr434KEbHov6qH6K9wulsGuXQkdGajSiHlT+4zDr5oUatGjRfwcMQF8IMQf5+mDcmCRaUVIB+EckBhdOSUwkothyXrwqFHWaK0hTYOQHWo3dla6Owbb6qkdt4WavPAiEmoeOE7wkVX6CPcR5kyeH3BqESLZBaGD1IBOAnvU0=
+    secure: fzdMIz9fk0Q53E+RQLY4G73uywrIeJIPinu1hlL04mOEod+Hmdnz2HASZS27EXEK8EabeLHrE59+oJDjrUA0B8r6Ertq0p/qAoOa+ivkLjHI1t8JM7qLMRKWB+dsUM3aDDsXksdjUPSraqfwzKzAGLNn2GU3a0+y1Cm3ivE724+q5RnT/+R8MDZBHhsNOdZi9hCRHYHX4kNBtuwJTFLwGz3U5ZVrq2dvJ9u4kSlHiARdbVTzI6ZHeGrHaHT+tDuBIMddsFI+ew5NQqPTE59LX7o3zibPTeErJNIyAAIXkSh49OCuJzvKlpvHHqsAFXDEYN+robsTQ68VtIMuO/KWv2gpIYIXudLjynFLcVVwFirDYEJsnUxueOKOBwpoc7B4YgiN6+v7/rj+uh839/1NhGFa/FuQ01bhwXGpyVCRyOmGzwKze23SHps/YLBVKZ4jMB6MrxvLV1elJnTvIlOw7tqcwC+ivHfDMTRwLuZ7PQtiM8mcfJ8z/io1Ngjs8/oPt68BGvVH7b4zWRTa16wgfDEjEYWXfxHN9I+MBVYcoWzMArHXRm2UXUZ/MvfoGYNkBJfgA2GijciDsk0jWsOxAxblvjP2bKHzC4c42jjM8o8WHgnzjLjLQzy4QA0GNs9Uf1VQWp3lr9CbaM0BLbVrtkXhESXRnqwd2SpjBGUoFgU=
+    on_success: change
+    on_failure: always

@@ -2,9 +2,13 @@ language: python
 python:
 - '3.5'
 - '3.6'
-install: pip install -r common/requirements.txt
+install:
+  - pip install -r common/requirements.txt
+  - pip install -r osmocom-python/requirements.txt -r osmocom-python/requirements-dev.txt
 sudo: false
-script: nosetests --where common
+script:
+  - nosetests --where common
+  - nosetests --where osmocom-python
 notifications:
   slack:
     secure: fzdMIz9fk0Q53E+RQLY4G73uywrIeJIPinu1hlL04mOEod+Hmdnz2HASZS27EXEK8EabeLHrE59+oJDjrUA0B8r6Ertq0p/qAoOa+ivkLjHI1t8JM7qLMRKWB+dsUM3aDDsXksdjUPSraqfwzKzAGLNn2GU3a0+y1Cm3ivE724+q5RnT/+R8MDZBHhsNOdZi9hCRHYHX4kNBtuwJTFLwGz3U5ZVrq2dvJ9u4kSlHiARdbVTzI6ZHeGrHaHT+tDuBIMddsFI+ew5NQqPTE59LX7o3zibPTeErJNIyAAIXkSh49OCuJzvKlpvHHqsAFXDEYN+robsTQ68VtIMuO/KWv2gpIYIXudLjynFLcVVwFirDYEJsnUxueOKOBwpoc7B4YgiN6+v7/rj+uh839/1NhGFa/FuQ01bhwXGpyVCRyOmGzwKze23SHps/YLBVKZ4jMB6MrxvLV1elJnTvIlOw7tqcwC+ivHfDMTRwLuZ7PQtiM8mcfJ8z/io1Ngjs8/oPt68BGvVH7b4zWRTa16wgfDEjEYWXfxHN9I+MBVYcoWzMArHXRm2UXUZ/MvfoGYNkBJfgA2GijciDsk0jWsOxAxblvjP2bKHzC4c42jjM8o8WHgnzjLjLQzy4QA0GNs9Uf1VQWp3lr9CbaM0BLbVrtkXhESXRnqwd2SpjBGUoFgU=

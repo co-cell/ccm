@@ -6,9 +6,8 @@ All rights reserved.
 This source code is licensed under the BSD-style license found in the
 LICENSE file in the root directory of this source tree. An additional grant
 of patent rights can be found in the PATENTS file in the same directory.
-"""
 
-'''SMS PDU encoding and decoding, including GSM-0338 character set.
+SMS PDU encoding and decoding, including GSM-0338 character set.
 
 Overview
 --------
@@ -123,7 +122,7 @@ Version History (in Brief)
 This code is copyright 2011 eKit.com Inc (http://www.ekit.com/)
 See the end of the source file for the license of use.
 
-'''
+"""
 
 __version__ = '1.1'
 

@@ -171,7 +171,7 @@ class SMS_PDU_Test(unittest.TestCase):
             '110a0b911614261771f00000ff18c8342800da944103d05701da17d2fdf7a3e3c'
             'f7b12',
             '447924449999')
-        ae(s.user_data, u"Hi \u00A3 \u20AC \u00A5 \u00A7\\n \u00E4\u00E9i\u00F1"
+        ae(s.user_data, u"Hi \u00A3 \u20AC \u00A5 \u00A7\n \u00E4\u00E9i\u00F1"
                         u"o\u00E5\u00E6\u00FCy\u00DF\u00E7")
 
     def test_sms_decode_businesscard(self):

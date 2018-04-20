@@ -72,7 +72,8 @@ class SMS_PDU_Test(unittest.TestCase):
         ae(packPhoneNumber(output), input)
 
     def test_tpdu_encode(self):
-        pd = time.mktime((2009, 8, 7, 6, 5, 4, 0, 0, 0))
+        is_daylight_savings = time.localtime().tm_isdst
+        pd = time.mktime((2009, 8, 7, 6, 5, 4, 0, 0, is_daylight_savings))
         p = smspdu.SMS_DELIVER.create('46708251358', 'test', 'hellohello',
                                       datestamp=pd, tp_sri=1, tp_mms=0)
         self.assertEqual(p.toPDU(),
@@ -85,7 +86,8 @@ class SMS_PDU_Test(unittest.TestCase):
         self.assertEqual(s.user_data, 'hellohello')
 
     def test_tpdu_encode_alpha_sender(self):
-        pd = time.mktime((2009, 8, 7, 6, 5, 4, 3, 0, 0))
+        is_daylight_savings = time.localtime().tm_isdst
+        pd = time.mktime((2009, 8, 7, 6, 5, 4, 0, 0, is_daylight_savings))
         p = smspdu.SMS_DELIVER.create('eKit', 'test', 'hellohello',
                                       datestamp=pd, tp_sri=1, tp_mms=0)
         self.assertEqual(p.toPDU(),
@@ -360,7 +362,8 @@ class SMS_PDU_Test(unittest.TestCase):
                          '0008D0E5759A0E7FF6907090307513000824010101BB400101')
 
     def test_mwi(self):
-        pd = time.mktime((2009, 8, 7, 6, 5, 4, 3, 0, 0))
+        is_daylight_savings = time.localtime().tm_isdst
+        pd = time.mktime((2009, 8, 7, 6, 5, 4, 0, 0, is_daylight_savings))
         p = smspdu.SMS_DELIVER.create('eKit', 'test', 'hellohello',
                                       datestamp=pd, tp_sri=1, tp_mms=0,
                                       tp_dcs=0xD8)

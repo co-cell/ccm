@@ -368,6 +368,8 @@ class SMS_GENERIC(object):
 
         l.append('tp_udl = %s' % self.tp_udl)
         l.append('tp_ud = %r' % self.tp_ud)
+        # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+        # used here.
         l.append('datestamp = %s' %
                  time.strftime('%y%m%d%H%M%S00', time.localtime(self.datestamp)))
         l.append('user_data = %r' % self.user_data)
@@ -438,6 +440,8 @@ class SMS_DELIVER(SMS_GENERIC):
         else:
             if datestamp is None:
                 datestamp = time.time()
+            # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+            # used here.
             tp_scts = time.strftime('%y%m%d%H%M%S00', time.localtime(datestamp))
 
         # determine TP-Address-Length and TP-Type-of-Address
@@ -825,6 +829,8 @@ class SMS_SUBMIT(SMS_GENERIC):
         And of course we lose the TP-Validity-Period information.
         """
         tp_al, tp_toa, tp_oa = self.determineAddress(self.sender)
+        # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+        # used here.
         tp_scts = time.strftime('%y%m%d%H%M%S00',
                                 time.localtime(self.datestamp))
         return SMS_DELIVER(

@@ -1325,6 +1325,8 @@ def pack7bit(string, headerlen=0):
     # pack all those pesky septets into one big number
     bignum = 0
     for c in string:
+        if ord(c) > 127:
+            raise ValueError("{}({}) is not 7 bit encodeable".format(c, ord(c)))
         septet = ord(c)
         bignum |= septet << n
         n += 7

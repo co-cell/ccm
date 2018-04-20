@@ -297,7 +297,11 @@ class SMS_GENERIC(object):
 
         elif codec == 'ucs2':
             # UCS2
-            user_data = str(user_data.encode('utf_16_be', 'replace'))
+            user_data_bytes = user_data.encode('utf_16_be', 'replace')
+            # TODO(matt9j) Naively map the bytes back onto 8 bit
+            # characters as is done in pack7bit.
+            user_data = ''.join(map(chr, user_data_bytes))
+
             length = len(user_data)
             if length > 140:
                 raise ValueError('UCS-2 message too long (%d>140 chars)' %
@@ -1067,8 +1071,11 @@ def unpack8bit(bytes):
 
 
 def unpackUCS2(buf):
-    # XXX(omar) hocus pocus
-    return buf.encode('latin1').decode('UTF-16-be')
+    # TODO(matt9j) The API uses strings for buffers instead of actual
+    # bytes/bytearrays. Naively map the string to bytes as is done in
+    # unpack7bit.
+    byte_buffer = bytearray([ord(x) for x in buf])
+    return byte_buffer.decode('UTF-16-be')
 
 
 def decompress_user_data(bytes):

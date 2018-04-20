@@ -1,7 +1,7 @@
 For documentation please "pydoc smspdu". The same documentation is available
 at http://pypi.python.org/pypi/smspdu
 
-To run its tests use "python -m html".
+To run its tests use `nosetests`.
 
 To install under Python 2:
 

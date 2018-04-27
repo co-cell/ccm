@@ -297,7 +297,11 @@ class SMS_GENERIC(object):
 
         elif codec == 'ucs2':
             # UCS2
-            user_data = str(user_data.encode('utf_16_be', 'replace'))
+            user_data_bytes = user_data.encode('utf_16_be', 'replace')
+            # TODO(matt9j) Naively map the bytes back onto 8 bit
+            # characters as is done in pack7bit.
+            user_data = ''.join(map(chr, user_data_bytes))
+
             length = len(user_data)
             if length > 140:
                 raise ValueError('UCS-2 message too long (%d>140 chars)' %
@@ -368,6 +372,8 @@ class SMS_GENERIC(object):
 
         l.append('tp_udl = %s' % self.tp_udl)
         l.append('tp_ud = %r' % self.tp_ud)
+        # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+        # used here.
         l.append('datestamp = %s' %
                  time.strftime('%y%m%d%H%M%S00', time.localtime(self.datestamp)))
         l.append('user_data = %r' % self.user_data)
@@ -438,6 +444,8 @@ class SMS_DELIVER(SMS_GENERIC):
         else:
             if datestamp is None:
                 datestamp = time.time()
+            # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+            # used here.
             tp_scts = time.strftime('%y%m%d%H%M%S00', time.localtime(datestamp))
 
         # determine TP-Address-Length and TP-Type-of-Address
@@ -825,6 +833,8 @@ class SMS_SUBMIT(SMS_GENERIC):
         And of course we lose the TP-Validity-Period information.
         """
         tp_al, tp_toa, tp_oa = self.determineAddress(self.sender)
+        # TODO(matt9j) Validate if localtime, UTC, or TAI should be
+        # used here.
         tp_scts = time.strftime('%y%m%d%H%M%S00',
                                 time.localtime(self.datestamp))
         return SMS_DELIVER(
@@ -1061,8 +1071,11 @@ def unpack8bit(bytes):
 
 
 def unpackUCS2(buf):
-    # XXX(omar) hocus pocus
-    return buf.encode('latin1').decode('UTF-16-be')
+    # TODO(matt9j) The API uses strings for buffers instead of actual
+    # bytes/bytearrays. Naively map the string to bytes as is done in
+    # unpack7bit.
+    byte_buffer = bytearray([ord(x) for x in buf])
+    return byte_buffer.decode('UTF-16-be')
 
 
 def decompress_user_data(bytes):
@@ -1312,6 +1325,8 @@ def pack7bit(string, headerlen=0):
     # pack all those pesky septets into one big number
     bignum = 0
     for c in string:
+        if ord(c) > 127:
+            raise ValueError("{}({}) is not 7 bit encodeable".format(c, ord(c)))
         septet = ord(c)
         bignum |= septet << n
         n += 7

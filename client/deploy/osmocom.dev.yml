@@ -22,9 +22,9 @@
       register: touch_log
       changed_when: touch_log.diff.before.state != "file"
 
-    - include: base.yml
+    - import_tasks: base.yml
 
-    - include: osmocom.yml
+    - import_tasks: osmocom.yml
 
     - name: Add local repo (for local development)
       apt_repository: repo='deb file:/home/vagrant/endaga-packages localdev main' state=present update_cache=no

@@ -23,7 +23,9 @@
       apt_repository: repo='deb http://repo.endaga.com dev main' update_cache=no mode=664
 
     - name: Set repo.endaga to order 10
-      shell: sudo mv /etc/apt/sources.list.d/repo_endaga_com.list /etc/apt/sources.list.d/10_repo_endaga_com.list || exit 0
+      become: yes
+      shell: mv /etc/apt/sources.list.d/repo_endaga_com.list /etc/apt/sources.list.d/10_repo_endaga_com.list || exit 0
 
     - name: Set repo.etagecom to order 20
-      shell: sudo mv /etc/apt/sources.list.d/repo_etagecom_io.list /etc/apt/sources.list.d/20_repo_etagecom_io.list || exit 0
+      become: yes
+      shell: mv /etc/apt/sources.list.d/repo_etagecom_io.list /etc/apt/sources.list.d/20_repo_etagecom_io.list || exit 0

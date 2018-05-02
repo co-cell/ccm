@@ -12,18 +12,18 @@ To get started, you should install
 
 [Vagrant](http://www.vagrantup.com/downloads.html)
 
-and Ansible
+and [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 so you can establish a development environment.
 
-Once you've installed vagrant, just run `vagrant up openbts` (or
-osmocom if you prefer that client) and a development box will be
-created based on the Vagrantfile in this repo. It will automatically
-mount this directory in the VM under `/vagrant`, so you can use
-whatever local development tools you like.
+Once you've installed vagrant, just run `vagrant up osmocom` and a
+development box will be created based on the Vagrantfile in this
+repo. It will automatically mount this directory as a shared directory
+in the VM under `/vagrant`, so you can use whatever local development
+tools you like.
 
 The development environment emulates running a full CCM BTS in a
-VM, based on source you have checked out locally.  It also has all the
+VM, based on source you have checked out on the host.  It also has all the
 dependencies set up to build Freeswitch and OpenBTS if necessary.
 
 
@@ -457,7 +457,7 @@ Style
 =====
 
 We use the [Google Python Style
-Guide](https://google-styleguide.googlecode.com/svn/trunk/pyguide.html)
+Guide](https://google.github.io/styleguide/pyguide.html)
 to resolve ambiguity with formatting, whitespace, variable names, etc.
 
 And we strongly recommend using `pylint` before submitting a pull

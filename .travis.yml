@@ -3,15 +3,17 @@ python:
 - '3.5'
 - '3.6'
 install:
-  - pip install -r common/requirements.txt
-  - pip install -r osmocom-python/requirements.txt -r osmocom-python/requirements-dev.txt
+- pip install -r common/requirements.txt
+- pip install -r osmocom-python/requirements.txt -r osmocom-python/requirements-dev.txt
 sudo: false
 script:
-  - nosetests --where common
-  - nosetests --where osmocom-python
-  - nosetests --where smspdu
+- nosetests --where common
+- nosetests --where osmocom-python
+- nosetests --where smspdu
 notifications:
+  email: false
   slack:
-    secure: fzdMIz9fk0Q53E+RQLY4G73uywrIeJIPinu1hlL04mOEod+Hmdnz2HASZS27EXEK8EabeLHrE59+oJDjrUA0B8r6Ertq0p/qAoOa+ivkLjHI1t8JM7qLMRKWB+dsUM3aDDsXksdjUPSraqfwzKzAGLNn2GU3a0+y1Cm3ivE724+q5RnT/+R8MDZBHhsNOdZi9hCRHYHX4kNBtuwJTFLwGz3U5ZVrq2dvJ9u4kSlHiARdbVTzI6ZHeGrHaHT+tDuBIMddsFI+ew5NQqPTE59LX7o3zibPTeErJNIyAAIXkSh49OCuJzvKlpvHHqsAFXDEYN+robsTQ68VtIMuO/KWv2gpIYIXudLjynFLcVVwFirDYEJsnUxueOKOBwpoc7B4YgiN6+v7/rj+uh839/1NhGFa/FuQ01bhwXGpyVCRyOmGzwKze23SHps/YLBVKZ4jMB6MrxvLV1elJnTvIlOw7tqcwC+ivHfDMTRwLuZ7PQtiM8mcfJ8z/io1Ngjs8/oPt68BGvVH7b4zWRTa16wgfDEjEYWXfxHN9I+MBVYcoWzMArHXRm2UXUZ/MvfoGYNkBJfgA2GijciDsk0jWsOxAxblvjP2bKHzC4c42jjM8o8WHgnzjLjLQzy4QA0GNs9Uf1VQWp3lr9CbaM0BLbVrtkXhESXRnqwd2SpjBGUoFgU=
     on_success: change
     on_failure: always
+    rooms:
+      secure: dtHYX0hncSgXsLPyylaqRgYiqRlF4fYVMG2YmtOXKNAo+SdGBRHMgyJRB4gqJSMZ/BpBVhAL9f2C22Aw1xZ1ORYSRSawfcJgMAS5alh5fcE0ddJg3SG4UGXEUHkBYVq+j5qKfnNP6SnHzlL082chSWT8jIptJwcuiQpSSC212BgRwzJECTa2uGvafHbxFvDdF+osO7lSQ0nw9Vy2n2v3RXnkSnNAGF8X8iFr8a3ihXf6B3e0RJZY4KXpHGx1yPx62sH6LZNJfRljLAvCrKTOVfH7Tp6HUcw49F4+09VXwdir9OwCXd67AXQHGwZr3PQg07LGAIjb4t5Jl0zm48px0okf0FeEQznzEtQhMRPUHyFWI7qJWfgmBAf4GMWK84ZTlxxXuMzbUFYDWi7Mfue28O2ca0uWIvZ3Vy9zxsL7c7lY5WIaZbTJ0jVq0qlNqSmbJKFDmCVaLqF+zTttqV5uAwxctrU/NqfLHLevy3OUo3ew6pfoCQn4NXVwwvVoMqp0T1r9Msj51h9Wdei1rkQWuqGdNdDlAeNEsIv5J9kfpu688k603mN4//cD4a9E546uAWfRpGCKnzR9zVus/EdpCBX3RxzlnvHHBBh4vSxhGgrZvxGxpUwRiHcjOP4Ec+dBuce4ts263I+F2Db/RZKGcvVW4YUwqFvPpZRkSqXLQqc=

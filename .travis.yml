@@ -11,6 +11,7 @@ script:
 - nosetests --where osmocom-python
 - nosetests --where smspdu
 notifications:
+  email: false
   slack:
     on_success: change
     on_failure: always

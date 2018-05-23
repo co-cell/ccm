@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "deploy/openbts.dev.yml"
       ansible.inventory_path = "deploy/hosts"
       ansible.raw_arguments = ['--timeout=30']
-      ansible.verbose = 'vvvv'
+      ansible.verbose = 'vv'
     end
   end
 
@@ -73,7 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "deploy/osmocom.dev.yml"
       ansible.inventory_path = "deploy/hosts"
       ansible.raw_arguments = ['--timeout=30']
-      ansible.verbose = 'vvvv'
+      ansible.verbose = 'vv'
     end
   end
 

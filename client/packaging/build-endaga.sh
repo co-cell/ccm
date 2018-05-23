@@ -84,12 +84,12 @@ elif [[ $GSM =~ osmocom ]]; then
   PREINST=${PACKAGE_DIR}/endaga-preinst
   POSTINST=${PACKAGE_DIR}/osmocom-postinst
   OTHER_DEPS=(
-    '--depends' 'openggsn (>= 0.92)'
+    '--depends' 'osmo-ggsn (>= 1.2.0)'
     '--depends' 'osmocom-nitb (>= 0.14.0)'
     '--depends' 'osmo-sip-connector'
-    '--depends' 'osmo-trx (>= 0.1.9)'
+    '--depends' 'osmo-trx-uhd (>= 0.4.0)'
     '--depends' 'osmo-pcu (>= 0.2)'
-    '--depends' 'osmocom-sgsn (>= 0.15.0)'
+    '--depends' 'osmo-sgsn (>= 1.2.0)'
     '--depends' 'python3-osmocom (>= 0.1.0)'
     '--depends' 'python-esl'
     '--depends' 'freeswitch-meta-vanilla'

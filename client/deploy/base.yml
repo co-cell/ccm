@@ -16,7 +16,3 @@
           - test
           - beta
           - stable
-
-    - name: Set repo.etagecom to order 20
-      become: yes
-      shell: mv /etc/apt/sources.list.d/repo_etagecom_io.list /etc/apt/sources.list.d/20_repo_etagecom_io.list || exit 0

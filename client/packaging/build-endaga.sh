@@ -33,7 +33,7 @@ fi
 #select GSM engine
 if [ -z "$2" ]; then
   GSM='osmocom'
-elif [[ "$2" =~ ^(openbts|osmocom|osmocom-fairwaves)$ ]]; then
+elif [[ "$2" =~ ^(openbts|osmocom)$ ]]; then
   GSM=$2
 else
   echo "error: $2 is not a supported GSM Engine. Exiting..."
@@ -79,7 +79,6 @@ if [[ $GSM =~ openbts ]]; then
     '--depends' 'rsyslog (=8.12.0-0adiscon1trusty1)'
     '--depends' 'rsyslog-mmnormalize (=8.12.0-0adiscon1trusty1)'
     '--conflicts' 'endaga-osmocom'
-    '--conflicts' 'endaga-osmocom-fairwaves'
   )
 elif [[ $GSM =~ osmocom ]]; then
   PREINST=${PACKAGE_DIR}/endaga-preinst
@@ -101,21 +100,9 @@ elif [[ $GSM =~ osmocom ]]; then
     '--depends' 'freeswitch-mod-xml-cdr'
     '--depends' 'rsyslog (>= 7.4)'
     '--depends' 'uhd-host (>= 3.7.3-1)'
+    '--depends' 'osmo-bts-trx (>= 0.5.0)'
+    '--conflicts' 'endaga-openbts'
   )
-
-  if [[ $GSM =~ osmocom-fairwaves ]]; then
-    OTHER_DEPS+=(
-      '--depends' 'osmo-bts (>= 0.2.9) | osmo-bts-trx (>= 0.2.9)'
-      '--conflicts' 'endaga-openbts'
-      '--conflicts' 'endaga-osmocom'
-    )
-  else
-    OTHER_DEPS+=(
-      '--depends' 'osmo-bts-trx (>= 0.5.0)'
-      '--conflicts' 'endaga-openbts'
-      '--conflicts' 'endaga-osmocom-fairwaves'
-    )
-  fi
 fi
 
 #build it

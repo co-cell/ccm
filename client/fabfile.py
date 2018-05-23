@@ -35,7 +35,7 @@ except ImportError:
 # Global packaging settings
 # Use 'setdefault' so as not to override prior settings, e.g., --set foo=bar
 env.setdefault("pkgfmt", "deb")
-env.setdefault("gsmeng", "openbts")
+env.setdefault("gsmeng", "osmocom")
 env.setdefault("depmap", {})
 
 

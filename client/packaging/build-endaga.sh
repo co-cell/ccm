@@ -32,7 +32,7 @@ fi
 
 #select GSM engine
 if [ -z "$2" ]; then
-  GSM='openbts'
+  GSM='osmocom'
 elif [[ "$2" =~ ^(openbts|osmocom|osmocom-fairwaves)$ ]]; then
   GSM=$2
 else

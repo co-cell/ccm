@@ -70,29 +70,6 @@ def lab():
     env.hosts = ['endaga@192.168.1.25']
     env.password = 'endaga'
 
-def centos():
-    """
-    Package things for CentOS (experimental)
-    env.pkgfmt: The package format to produce as output
-    env.depmap: A mapping between Ubuntu package names and CentOS ones.
-
-    TODO(shasan): The dependency map should handle more than just the package
-    name; it should optionally also handle version numbers as well for system
-    packages. Ideally, it should also read this in from a file, rather than
-    being hardcoded here.
-    """
-    env.pkgfmt = "rpm"
-    env.depmap = {
-    }
-
-
-def ubuntu():
-    """
-    Package things for Ubuntu (default)
-    """
-    env.pkgfmt = "deb"
-    env.depmap = {
-    }
 
 def osmocom():
     """

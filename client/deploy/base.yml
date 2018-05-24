@@ -10,7 +10,11 @@
     - name: Add Etage key
       apt_key: url=http://repo.etagecom.io/pubkey.gpg state=present id=673FFA94
     - name: Add Etage dev repo
-      apt_repository: repo='deb http://repo.etagecom.io {{ item }} main' update_cache=no mode=664
+      apt_repository:
+        repo: 'deb http://repo.etagecom.io {{ item }} main'
+        filename: 20_repo_etagecom_io
+        update_cache: no
+        mode: 664
       with_items:
           - dev
           - test

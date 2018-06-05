@@ -66,6 +66,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     osmocom.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024"]
       vb.customize ["modifyvm", :id, "--cpus", "2"]
+
+      # Pass through USB control of attached USRP
+      vb.customize ['modifyvm', :id, '--usb', 'on']
+      vb.customize ['modifyvm', :id, '--usbehci', 'on']
+      vb.customize ['modifyvm', :id, '--usbxhci', 'on']
+      vb.customize ['usbfilter', 'add', '0', '--target', :id, '--name', 'B200mini',
+                    '--vendorid', '0x2500', '--productid', '0x0021']
+      vb.customize ['usbfilter', 'add', '0', '--target', :id, '--name', 'B200',
+                    '--vendorid', '0x2500', '--productid', '0x0020']
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
     end
 
     osmocom.vm.provision "ansible" do |ansible|

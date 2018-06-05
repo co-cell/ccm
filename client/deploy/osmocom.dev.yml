@@ -27,10 +27,11 @@
     - import_tasks: osmocom.yml
 
     - name: Add local repo (for local development)
-      apt_repository: repo='deb file:/home/vagrant/endaga-packages localdev main' state=present update_cache=no
-
-    - name: Set the local development repo to order 30
-      shell: mv /etc/apt/sources.list.d/file_home_vagrant_etagecom_packages.list /etc/apt/sources.list.d/30_file_home_vagrant_etagecom_packages.list || exit 0
+      apt_repository:
+        repo: 'deb file:/home/vagrant/endaga-packages localdev main'
+        state: present
+        filename: 10_file_home_vagrant_etagecom_packages
+        update_cache: no
 
     - name: Set the version preferences
       copy: src=files/endaga-preferences dest=/etc/apt/preferences.d/endaga-preferences

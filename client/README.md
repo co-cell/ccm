@@ -12,7 +12,7 @@ To get started, you should install
 
 [Vagrant](http://www.vagrantup.com/downloads.html)
 
-and [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+and [Ansible](>= 2.4)(http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 so you can establish a development environment. The build has been
 validated against vagrant 2.1.1, ansible 2.5.3.

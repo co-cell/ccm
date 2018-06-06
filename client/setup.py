@@ -111,12 +111,12 @@ setup(
             'conf/registration/etage-bundle.crt',
         ]),
         ('/etc/supervisor/conf.d/', [
-            'conf/registration/runwritable.conf',
             'conf/endaga-gprsd/endaga-gprsd-supervisor.conf',
         ]),
         ('/lib/systemd/system/', [
             'conf/systemd/ccm-openvpn.service',
             'conf/systemd/endagad.service',
+            'conf/systemd/runwriteable.service',
         ]),
         ('/etc/lighttpd/conf-enabled/', [
             'conf/10-federer-fastcgi.conf',

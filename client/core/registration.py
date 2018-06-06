@@ -36,7 +36,7 @@ from core.service import Service
 
 conf = ConfigDB()
 # Dependent supervisor service names for start/stop.
-SERVICES = bts.SERVICES + [Service.SupervisorService('openvpn'),
+SERVICES = bts.SERVICES + [Service.SystemService('ccm-openvpn'),
                            Service.SystemService('freeswitch'),
                            Service.SupervisorService('endagad')]
 
@@ -321,7 +321,7 @@ def update_vpn():
         for _ in range(0, max_attempts):
             # Sometimes the vpn service is started, but the VPN is still down.
             # If this is the case, stop the vpn service first.
-            openvpn_service = Service.SupervisorService('openvpn')
+            openvpn_service = Service.SystemService('ccm-openvpn')
             if openvpn_service.status() == ServiceState.Running:
                 openvpn_service.stop()
             if openvpn_service.start():

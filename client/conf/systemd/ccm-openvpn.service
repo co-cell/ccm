@@ -1,0 +1,17 @@
+[Unit]
+Description=The client openvpn endpoint
+Wants=networking.target
+After=networking.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/openvpn endaga-vpn-client.conf.noauto
+
+WorkingDirectory=/etc/openvpn
+User=root
+
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

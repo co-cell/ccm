@@ -67,7 +67,6 @@ setup(
         "python-dateutil==2.4.2",
         "pytz==2015.7",
         "snowflake>=0.0.3",
-        "supervisor>=0.4.0",
         "pexpect>=4.2.1",
         "ptyprocess>=0.5.1",
     ],
@@ -112,10 +111,12 @@ setup(
             'conf/registration/etage-bundle.crt',
         ]),
         ('/etc/supervisor/conf.d/', [
-            'conf/registration/openvpn.conf',
             'conf/registration/runwritable.conf',
             'conf/registration/endagad.conf',
             'conf/endaga-gprsd/endaga-gprsd-supervisor.conf',
+        ]),
+        ('/lib/systemd/system/', [
+            'conf/systemd/ccm-openvpn.service',
         ]),
         ('/etc/lighttpd/conf-enabled/', [
             'conf/10-federer-fastcgi.conf',

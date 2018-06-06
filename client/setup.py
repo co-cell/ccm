@@ -110,12 +110,10 @@ setup(
         ('/etc/openvpn/', [
             'conf/registration/etage-bundle.crt',
         ]),
-        ('/etc/supervisor/conf.d/', [
-            'conf/endaga-gprsd/endaga-gprsd-supervisor.conf',
-        ]),
         ('/lib/systemd/system/', [
             'conf/systemd/ccm-openvpn.service',
             'conf/systemd/endagad.service',
+            'conf/systemd/endaga-gprsd.service',
             'conf/systemd/runwriteable.service',
         ]),
         ('/etc/lighttpd/conf-enabled/', [

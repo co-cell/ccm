@@ -35,10 +35,10 @@ from core.service import Service
 
 
 conf = ConfigDB()
-# Dependent supervisor service names for start/stop.
+# Dependent service names for start/stop.
 SERVICES = bts.SERVICES + [Service.SystemService('ccm-openvpn'),
                            Service.SystemService('freeswitch'),
-                           Service.SupervisorService('endagad')]
+                           Service.SystemService('endagad')]
 
 
 class RegistrationError(Exception):
@@ -411,7 +411,7 @@ def reset_registration(registry=None):
         if s.name == 'endagad':
             continue
         s.stop()
-    Service.SupervisorService('endagad').restart()
+    Service.SystemService('endagad').restart()
 
 def system_healthcheck(checkin_data):
     # A generic "health check" on the system. Currently, we just see if

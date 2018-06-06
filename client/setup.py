@@ -112,11 +112,11 @@ setup(
         ]),
         ('/etc/supervisor/conf.d/', [
             'conf/registration/runwritable.conf',
-            'conf/registration/endagad.conf',
             'conf/endaga-gprsd/endaga-gprsd-supervisor.conf',
         ]),
         ('/lib/systemd/system/', [
             'conf/systemd/ccm-openvpn.service',
+            'conf/systemd/endagad.service',
         ]),
         ('/etc/lighttpd/conf-enabled/', [
             'conf/10-federer-fastcgi.conf',

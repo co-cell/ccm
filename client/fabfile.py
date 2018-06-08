@@ -150,6 +150,7 @@ def update(flush_cache='yes'):
             with cd('%s' % bin_path):
                 run('gzip -c Packages > Packages.gz')
                 run('apt-ftparchive '
+                    '-o APT::FTPArchive::Release::Codename=localdev '
                     '-o APT::FTPArchive::Release::Components=main release . '
                     '> Release')
             with cd('dists/localdev/'):

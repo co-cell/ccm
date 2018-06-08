@@ -14,10 +14,10 @@
       copy: src=files/osmocom-preferences dest=/etc/apt/preferences.d/osmocom-preferences
 
     - name: Add Osmo key
-      apt_key: url=http://download.opensuse.org/repositories/network:/osmocom:/nightly/Debian_8.0/Release.key state=present
+      apt_key: url=http://download.opensuse.org/repositories/network:/osmocom:/latest/Debian_8.0/Release.key state=present
 
     - name: Add osmo Debian 8 repo (for osmo)
-      apt_repository: repo='deb http://download.opensuse.org/repositories/network:/osmocom:/nightly/Debian_8.0 ./' update_cache=no mode=664
+      apt_repository: repo='deb http://download.opensuse.org/repositories/network:/osmocom:/latest/Debian_8.0 ./' update_cache=no mode=664
 
     - name: Add all the (third party) packages needed for operation
       apt: pkg={{ item }} state=present update_cache=yes

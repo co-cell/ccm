@@ -14,7 +14,8 @@ To get started, you should install
 
 and [Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
-so you can establish a development environment.
+so you can establish a development environment. The build has been
+validated against vagrant 2.1.1, ansible 2.5.3.
 
 Once you've installed vagrant, just run `vagrant up osmocom` and a
 development box will be created based on the Vagrantfile in this

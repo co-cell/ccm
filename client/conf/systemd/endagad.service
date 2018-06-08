@@ -1,0 +1,16 @@
+[Unit]
+Description=The management daemon for endaga services
+Wants=networking.target
+After=networking.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/endagad
+
+User=root
+
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

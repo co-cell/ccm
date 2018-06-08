@@ -65,6 +65,7 @@ def package_python_endaga_core(package_requirements='no',
                         ' --before-install'
                         ' /home/vagrant/client/deploy/files/endaga-python-core/preinst'
                         ' setup.py')
+        _check_package_permissions()
 
 
 def package_python_sms_utilities(package_requirements='no'):
@@ -77,6 +78,7 @@ def package_python_sms_utilities(package_requirements='no'):
     _prep(path, package_requirements)
     with cd(path):
         _run_fpm_python('setup.py')
+        _check_package_permissions()
 
 
 def package_python_openbts(package_requirements='no'):
@@ -91,6 +93,7 @@ def package_python_openbts(package_requirements='no'):
     with cd(path):
         _run_fpm_python('setup.py')
         run('mv *.%s ~/endaga-packages' % env.pkgfmt)
+        _check_package_permissions()
 
 def package_python_osmocom(package_requirements='no'):
     """Packages osmocom-python.
@@ -102,6 +105,7 @@ def package_python_osmocom(package_requirements='no'):
     print('packaging %s' % path)
     with cd(path):
         _run_fpm_python('setup.py')
+        _check_package_permissions()
 
 
 def package_python_snowflake():
@@ -111,6 +115,7 @@ def package_python_snowflake():
     run('mkdir -p ' + PKG_DIR)
     _run_fpm_python('--after-install ' + BASE_DIR +
                     'client/deploy/files/snowflake/postinst snowflake')
+    _check_package_permissions()
 
 
 def package_python_freeswitch():
@@ -196,3 +201,40 @@ def _run_fpm_python(command, **kwargs):
     if res.succeeded:
         run('mv *.%s %s' % (env.pkgfmt, PKG_DIR))
     return res
+
+
+def _check_package_permissions():
+    """Validate key package components have read permission.
+
+    Filesystem permissions on the host will be incorporated into the
+    generated packages, and are not version controlled otherwise. This
+    function spot-checks some common package files to ensure packages
+    intended to be installed globally as root will be readable by
+    other users.
+    """
+    _check_read_permissions("setup.py")
+
+    for egg_info in run("find ./ -name *.egg-info -type d").splitlines():
+        _check_read_permissions(egg_info)
+        _check_exec_permissions(egg_info)
+        _check_read_permissions(egg_info + "/PKG-INFO")
+
+
+def _check_read_permissions(filename):
+    # Returns the name of the file if it has the given permission mask
+    res = run('find %s -perm -444' % filename)
+
+    if res.stdout == "":
+        raise RuntimeWarning(
+            "The component %s does not have all read permission."
+            "Check the permissions of the generated system package." % filename)
+
+
+def _check_exec_permissions(filename):
+    # Returns the name of the file if it has the given permission mask
+    res = run('find %s -perm -111' % filename)
+
+    if res.stdout == "":
+        raise RuntimeWarning(
+            "The component %s does not have all execute permission."
+            "Check the permissions of the generated system package." % filename)

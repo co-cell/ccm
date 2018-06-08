@@ -32,8 +32,7 @@ class OsmocomBTS(BaseBTS):
                      -- osmo-sip-connector -- mod_sofia (freeswitch)
                      -- mod_smpp (freeswitch)
     """
-    SERVICES = [Service.SupervisorService('osmo-trx'),
-                Service.SystemService('osmocom-nitb'),
+    SERVICES = [Service.SystemService('osmocom-nitb'),
                 Service.SystemService('osmo-bts-trx'),
                 Service.SystemService('osmo-sip-connector'),
                 Service.SystemService('osmo-pcu'),

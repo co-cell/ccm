@@ -35,10 +35,10 @@ from core.service import Service
 
 
 conf = ConfigDB()
-# Dependent supervisor service names for start/stop.
-SERVICES = bts.SERVICES + [Service.SupervisorService('openvpn'),
+# Dependent service names for start/stop.
+SERVICES = bts.SERVICES + [Service.SystemService('ccm-openvpn'),
                            Service.SystemService('freeswitch'),
-                           Service.SupervisorService('endagad')]
+                           Service.SystemService('endagad')]
 
 
 class RegistrationError(Exception):
@@ -321,7 +321,7 @@ def update_vpn():
         for _ in range(0, max_attempts):
             # Sometimes the vpn service is started, but the VPN is still down.
             # If this is the case, stop the vpn service first.
-            openvpn_service = Service.SupervisorService('openvpn')
+            openvpn_service = Service.SystemService('ccm-openvpn')
             if openvpn_service.status() == ServiceState.Running:
                 openvpn_service.stop()
             if openvpn_service.start():
@@ -411,7 +411,7 @@ def reset_registration(registry=None):
         if s.name == 'endagad':
             continue
         s.stop()
-    Service.SupervisorService('endagad').restart()
+    Service.SystemService('endagad').restart()
 
 def system_healthcheck(checkin_data):
     # A generic "health check" on the system. Currently, we just see if

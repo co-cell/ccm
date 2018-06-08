@@ -26,7 +26,7 @@ class OpenBTSBTS(BaseBTS):
     SERVICES = [Service.SupervisorService('openbts'),
                 Service.SupervisorService('smqueue'),
                 Service.SupervisorService('sipauthserve'),
-                Service.SupervisorService('gprsd')]
+                Service.SystemService('gprsd')]
 
     def __init__(self):
         self.conf = ConfigDB()

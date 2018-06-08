@@ -32,8 +32,8 @@ fi
 
 #select GSM engine
 if [ -z "$2" ]; then
-  GSM='openbts'
-elif [[ "$2" =~ ^(openbts|osmocom|osmocom-fairwaves)$ ]]; then
+  GSM='osmocom'
+elif [[ "$2" =~ ^(openbts|osmocom)$ ]]; then
   GSM=$2
 else
   echo "error: $2 is not a supported GSM Engine. Exiting..."
@@ -62,89 +62,76 @@ fi
 
 #set up appropriate dependencies
 if [[ $GSM =~ openbts ]]; then
-    PREINST=${PACKAGE_DIR}/endaga-preinst
-    POSTINST=${PACKAGE_DIR}/openbts-postinst
-    OTHER_DEPS=(
-	'--depends' 'openbts-public (= 5.0.8)'
-	'--depends' 'sipauthserve-public (= 5.0.1)'
-	'--depends' 'smqueue-public (= 5.0.4)'
-	'--depends' 'python3-openbts (= 0.1.15)'
-	'--depends' 'liba53 (= 0.1)'
-	'--depends' 'freeswitch-meta-vanilla (= 1.4.15~1-1~wheezy+1)'
-	'--depends' 'freeswitch-mod-python (= 1.4.15~1-1~wheezy+1)'
-	'--depends' 'freeswitch-mod-sms (= 1.4.15~1-1~wheezy+1)'
-	'--depends' 'freeswitch-mod-esl (= 1.4.15~1-1~wheezy+1)'
-	'--depends' 'freeswitch-mod-xml-cdr (= 1.4.15~1-1~wheezy+1)'
-	'--depends' 'python-freeswitch-endaga (= 1.4.6)'
-	'--depends' 'rsyslog (=8.12.0-0adiscon1trusty1)'
-	'--depends' 'rsyslog-mmnormalize (=8.12.0-0adiscon1trusty1)'
-	'--conflicts' 'endaga-osmocom'
-  '--conflicts' 'endaga-osmocom-fairwaves'
-	)
+  PREINST=${PACKAGE_DIR}/endaga-preinst
+  POSTINST=${PACKAGE_DIR}/openbts-postinst
+  OTHER_DEPS=(
+    '--depends' 'openbts-public (= 5.0.8)'
+    '--depends' 'sipauthserve-public (= 5.0.1)'
+    '--depends' 'smqueue-public (= 5.0.4)'
+    '--depends' 'python3-openbts (= 0.1.15)'
+    '--depends' 'liba53 (= 0.1)'
+    '--depends' 'freeswitch-meta-vanilla (= 1.4.15~1-1~wheezy+1)'
+    '--depends' 'freeswitch-mod-python (= 1.4.15~1-1~wheezy+1)'
+    '--depends' 'freeswitch-mod-sms (= 1.4.15~1-1~wheezy+1)'
+    '--depends' 'freeswitch-mod-esl (= 1.4.15~1-1~wheezy+1)'
+    '--depends' 'freeswitch-mod-xml-cdr (= 1.4.15~1-1~wheezy+1)'
+    '--depends' 'python-freeswitch-endaga (= 1.4.6)'
+    '--depends' 'rsyslog (=8.12.0-0adiscon1trusty1)'
+    '--depends' 'rsyslog-mmnormalize (=8.12.0-0adiscon1trusty1)'
+    '--conflicts' 'endaga-osmocom'
+  )
 elif [[ $GSM =~ osmocom ]]; then
-    PREINST=${PACKAGE_DIR}/endaga-preinst
-    POSTINST=${PACKAGE_DIR}/osmocom-postinst
-    OTHER_DEPS=(
-	'--depends' 'openggsn (>= 0.92)'
-	'--depends' 'osmocom-nitb (>= 0.14.0)'
-	'--depends' 'osmo-sip-connector'
-	'--depends' 'osmo-trx (>= 0.1.9)'
-	'--depends' 'osmo-pcu (>= 0.2)'
-	'--depends' 'osmocom-sgsn (>= 0.15.0)'
-	'--depends' 'python3-osmocom (>= 0.1.0)'
-  '--depends' 'python-esl'
-  '--depends' 'freeswitch-meta-vanilla'
-	'--depends' 'freeswitch-mod-python'
-	'--depends' 'freeswitch-mod-sms'
-	'--depends' 'freeswitch-mod-smpp'
-	'--depends' 'freeswitch-mod-esl'
-	'--depends' 'freeswitch-mod-xml-cdr'
-	'--depends' 'rsyslog (>= 7.4)'
-	'--depends' 'uhd-host (>= 3.7.3-1)'
-	)
-
-  if [[ $GSM =~ osmocom-fairwaves ]]; then
-    OTHER_DEPS+=(
-      '--depends' 'osmo-bts (>= 0.2.9) | osmo-bts-trx (>= 0.2.9)'
-      '--conflicts' 'endaga-openbts'
-      '--conflicts' 'endaga-osmocom'
-    )
-  else
-    OTHER_DEPS+=(
-      '--depends' 'osmo-bts-trx (>= 0.5.0)'
-      '--conflicts' 'endaga-openbts'
-      '--conflicts' 'endaga-osmocom-fairwaves'
-    )
-  fi
+  PREINST=${PACKAGE_DIR}/endaga-preinst
+  POSTINST=${PACKAGE_DIR}/osmocom-postinst
+  OTHER_DEPS=(
+    '--depends' 'osmo-ggsn (>= 1.2.0)'
+    '--depends' 'osmocom-nitb (>= 0.14.0)'
+    '--depends' 'osmo-sip-connector'
+    '--depends' 'osmo-trx-uhd (>= 0.4.0)'
+    '--depends' 'osmo-pcu (>= 0.2)'
+    '--depends' 'osmo-sgsn (>= 1.2.0)'
+    '--depends' 'python3-osmocom (>= 0.1.0)'
+    '--depends' 'python-esl'
+    '--depends' 'freeswitch-meta-vanilla'
+    '--depends' 'freeswitch-mod-python'
+    '--depends' 'freeswitch-mod-sms'
+    '--depends' 'freeswitch-mod-smpp'
+    '--depends' 'freeswitch-mod-esl'
+    '--depends' 'freeswitch-mod-xml-cdr'
+    '--depends' 'rsyslog (>= 7.4)'
+    '--depends' 'uhd-host (>= 3.7.3-1)'
+    '--depends' 'osmo-bts-trx (>= 0.5.0)'
+    '--conflicts' 'endaga-openbts'
+  )
 fi
 
 #build it
 fpm \
-    -s dir \
-    -t $PKGFMT \
-    -a all \
-    --name endaga-${GSM} \
-    --provides 'endaga' \
-    --conflicts 'endaga' \
-    --replaces 'endaga' \
-    --package ${BUILD_PATH} \
-    --description 'Community Cellular Manager client software' \
-    --version ${ENDAGA_VERSION} \
-    --after-install ${POSTINST} \
-    --before-install ${PREINST} \
-    --license "BSD" \
-    --maintainer "CommunityCellularManager@fb.com" \
-    --depends "endaga-lang (= 0.2.3)" \
-    --depends "freeswitch-conf-endaga (= 0.3.5)" \
-    --depends "libpq-dev" \
-    --depends "lighttpd" \
-    --depends "openvpn" \
-    --deb-pre-depends "python3-endaga-core (= 0.6.1)" \
-    --depends "python3-psycopg2" \
-    --depends "python3-snowflake (= 0.0.3)" \
-    --depends "postgresql" \
-    --depends "postgresql-contrib" \
-    --depends "sqlite3" \
-    "${OTHER_DEPS[@]/#/}" \
-    -C ${PACKAGE_DIR}/${GSM} \
-    .
+  -s dir \
+  -t $PKGFMT \
+  -a all \
+  --name endaga-${GSM} \
+  --provides 'endaga' \
+  --conflicts 'endaga' \
+  --replaces 'endaga' \
+  --package ${BUILD_PATH} \
+  --description 'Community Cellular Manager client software' \
+  --version ${ENDAGA_VERSION} \
+  --after-install ${POSTINST} \
+  --before-install ${PREINST} \
+  --license "BSD" \
+  --maintainer "CommunityCellularManager@fb.com" \
+  --depends "endaga-lang (= 0.2.3)" \
+  --depends "freeswitch-conf-endaga (= 0.3.5)" \
+  --depends "libpq-dev" \
+  --depends "lighttpd" \
+  --depends "openvpn" \
+  --deb-pre-depends "python3-endaga-core (= 0.6.1)" \
+  --depends "python3-psycopg2" \
+  --depends "python3-snowflake (= 0.0.3)" \
+  --depends "postgresql" \
+  --depends "postgresql-contrib" \
+  --depends "sqlite3" \
+  "${OTHER_DEPS[@]/#/}" \
+  -C ${PACKAGE_DIR}/${GSM} \
+  .

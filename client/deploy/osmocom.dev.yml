@@ -27,10 +27,11 @@
     - import_tasks: osmocom.yml
 
     - name: Add local repo (for local development)
-      apt_repository: repo='deb file:/home/vagrant/endaga-packages localdev main' state=present update_cache=no
-
-    - name: Set the local development repo to order 30
-      shell: mv /etc/apt/sources.list.d/file_home_vagrant_etagecom_packages.list /etc/apt/sources.list.d/30_file_home_vagrant_etagecom_packages.list || exit 0
+      apt_repository:
+        repo: 'deb file:/home/vagrant/endaga-packages localdev main'
+        state: present
+        filename: 10_file_home_vagrant_etagecom_packages
+        update_cache: no
 
     - name: Set the version preferences
       copy: src=files/endaga-preferences dest=/etc/apt/preferences.d/endaga-preferences
@@ -49,17 +50,26 @@
     - name: Setup build requirements for python packages
       apt: pkg={{ item }} state=present update_cache=no
       with_items:
-          - python3-babel
           - python3-dev
-          - python3-setuptools
 
-    - name: Get pip3 installer (not from debian repositories, uses ancient version)
+    - name: Get pip3 installer (not from debian8 repositories, uses ancient version)
       get_url:
         url: https://bootstrap.pypa.io/get-pip.py
         dest: /tmp/get-pip.py
 
     - name: Install pip
       command: python3 /tmp/get-pip.py
+
+    - name: Upgrade pip
+      pip:
+        name: pip
+        state: latest
+
+    - name: Install python dependencies from pypi via pip
+      pip: name={{ item }} state=latest
+      with_items:
+          - babel
+          - setuptools
 
     - name: Setup requirements for building FS from source (needed to generate working python modules)
       apt: pkg={{ item }} state=present update_cache=no

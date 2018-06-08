@@ -21,5 +21,5 @@ set_configdb_defaults
 mkdir -p /var/lib/asterisk/sqlite3dir
 chmod -R 777 /var/lib/asterisk/sqlite3dir
 
-# Reload supervisor for the sake of the registration module.
-supervisorctl reload
+# Reload systemd to catch newly installed unit files
+systemctl daemon-reload

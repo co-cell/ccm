@@ -28,7 +28,7 @@
 
     - name: Add local repo (for local development)
       apt_repository:
-        repo: 'deb file:/home/vagrant/endaga-packages localdev main'
+        repo: 'deb [trusted=yes] file:/home/vagrant/endaga-packages localdev main'
         state: present
         filename: 10_file_home_vagrant_etagecom_packages
         update_cache: no

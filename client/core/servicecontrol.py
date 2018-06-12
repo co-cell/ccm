@@ -11,10 +11,15 @@ of patent rights can be found in the PATENTS file in the same directory.
 import abc
 from enum import Enum
 import delegator
-from supervisor.xmlrpc import SupervisorTransport
 import xmlrpc.client
 
 from ccm.common import logger
+
+try:
+    from supervisor.xmlrpc import SupervisorTransport
+except ImportError as e:
+    logger.warning("Proceeding without supervisor support")
+
 
 class ServiceState(Enum):
     Running = 1

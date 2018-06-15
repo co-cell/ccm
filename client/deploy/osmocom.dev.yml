@@ -74,11 +74,23 @@
     - name: Setup requirements for building FS from source (needed to generate working python modules)
       apt: pkg={{ item }} state=present update_cache=no
       with_items:
-          - libsqlite3-dev
-          - devscripts
-          - libsmpp34-dev
+          - libcurl4-openssl-dev
+          - libedit-dev
           - libesl-perl
+          - libjpeg-dev
+          - libldns-dev
+          - libpcre3-dev
+          - libpython3-dev
+          - libsmpp34-dev
+          - libspeex-dev
+          - libspeexdsp-dev
+          - libsqlite3-dev
+          - libtool-bin
           - autoconf
+          - devscripts
+          - git
+          - python3-all-dev
+          - xz-utils
 
     - name: Setup requirements for building psycopg2 from source
       apt: pkg=libpq-dev state=present update_cache=no

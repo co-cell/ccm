@@ -19,6 +19,23 @@
     - name: Add osmo Debian 8 repo (for osmo)
       apt_repository: repo='deb http://download.opensuse.org/repositories/network:/osmocom:/latest/Debian_8.0 ./' update_cache=no mode=664
 
+    - name: Add Debian 8 backports for UHD
+      apt_repository:
+          repo: 'deb http://ftp.debian.org/debian jessie-backports main'
+          update_cache: yes
+          filename: backports
+          state: present
+
+    - name: Install UHD from backports
+      apt:
+          pkg: "{{ item }}"
+          state: present
+          update_cache: no
+          default_release: 'jessie-backports'
+      with_items:
+          - libuhd-dev
+          - uhd-host
+
     - name: Add all the (third party) packages needed for operation
       apt: pkg={{ item }} state=present update_cache=yes
       with_items:

@@ -57,6 +57,8 @@ def package_python_endaga_core(package_requirements='no',
                         ' postgresql-client-9.3 | postgresql-client-9.4 |'
                         ' postgresql-client-9.5"'
                         ' --deb-pre-depends postgresql-client-common'
+                        ' --deb-systemd conf/systemd/endagad.service'
+                        ' --deb-systemd conf/systemd/runwriteable.service'
                         ' --depends curl'
                         ' --depends supervisor'
                         ' --depends python3-flup6'

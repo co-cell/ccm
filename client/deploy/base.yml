@@ -20,3 +20,6 @@
           - test
           - beta
           - stable
+
+    - name: Add support for https transport
+      apt pkg="apt-transport-https" state=present update_cache=no

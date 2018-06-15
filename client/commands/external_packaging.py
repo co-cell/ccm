@@ -15,7 +15,7 @@ from fabric.api import cd, env, run
 from fabric.contrib.files import exists
 from fabric.operations import get, put
 
-def package_freeswitch(fs_version='1.6.16~33~e6d643b-1~jessie+1'):
+def package_freeswitch(fs_version='1.6.20~0~g987c9b9-1~jessie~endaga+1'):
     """Builds freeswitch with our patches.
 
     This will build the package based on what is currently checked out in the
@@ -31,6 +31,8 @@ def package_freeswitch(fs_version='1.6.16~33~e6d643b-1~jessie+1'):
         return
     with cd(path):
         run('cp ../client/packaging/py3.h src/mod/languages/mod_python')
+        run('git patch apply ../client/packaging/smpp_reconnect.patch')
+        run('git patch apply ../client/packaging/python3.patch')
         run('./build/set-fs-version.sh %s' % fs_version)
         run('dch -b -m -v "%s" --force-distribution -D unstable "Endaga build."' % fs_version)
         run('./bootstrap.sh', warn_only=True)

@@ -37,9 +37,9 @@ all your build deps. Osmocom is suitable for most testing purposes, even
 if Osmocom-compatible hardware is not available.
 
 It is STRONGLY RECOMMENDED that the initial installation of client
-software within the VM is accomplished using `apt-get` to download the
+software within the VM (`vagrant ssh [osmocom|openbts]`) is accomplished using `apt-get` to download the
 appropriate top-level package, to ensure that all dependencies are
-automatically satisfied. Install `endaga-osmocom` as follows: `apt-get
+automatically satisfied. Install `endaga-osmocom` as follows: `sudo apt-get
 install endaga-osmocom`.
 
 To build everything from source (i.e., what you have checked out on

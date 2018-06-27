@@ -11,11 +11,11 @@ Setting up for development
 [awscli](https://pypi.python.org/pypi/awscli) and
 [ansible](http://docs.ansible.com/):
 
-    apt-get install python-pip
-    pip install fabric
-    pip install awscli
-    pip install ansible
-    git update-index --assume-unchanged envdir/*
+        apt-get install python-pip
+        pip install fabric
+        pip install awscli
+        pip install ansible
+        git update-index --assume-unchanged envdir/*
 
 The last command (`git update-index`) allows you to make changes as
 necessary to your envdir without worrying about having those changes
@@ -36,11 +36,11 @@ so you can establish a development environment.  Once you've installed
 vagrant, just run `vagrant up` and a development box will be created
 based on the Vagrantfile in this repo.  This will launch five servers:
 
-`web`
-`db` (a PostgreSQL database)
-'vpn' (openvpn)
-'cert' (a certifier/signing service)
-`rmq` (a RabbitMQ broker).
+- `web`
+- `db` (a PostgreSQL database)
+- `vpn` (openvpn)
+- `cert` (a certifier/signing service)
+- `rmq` (a RabbitMQ broker).
 
 For example, to connect to the VM running the dev environment, you'd
 run `vagrant ssh web`.
@@ -60,8 +60,8 @@ if you need.
 
 4) On the web VM, use the development environment:
 
-    cd ~/cloud
-    workon endaga
+        cd ~/cloud
+        workon endaga
 
 The 'endaga' virtual environment MUST be used to run the Django
 server; Django is not installed in the root system.
